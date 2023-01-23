@@ -1,0 +1,16 @@
+/cmake-build-debug/
+/northengine/build/
+/northengine/cmake-build-debug/
+/northengine/bin/Debug/
+/northengine/bin/northengine.exe
+/northengine/bin/glad.pdb
+/northengine/bin/glad.dll
+/northengine/bin/glad.pdb
+/northengine/bin/imgui.ini
+/northengine/bin/libglad.dll
+/northengine/bin/libne_graphics.dll
+/northengine/bin/SDL2.dll
+/northengine/bin/SDL2_image.dll
+/northengine/bin/SDL2_ttf.dll
+/northengine_lang/bin/NEC.exe
+/northengine_lang/cmake-build-debug/
