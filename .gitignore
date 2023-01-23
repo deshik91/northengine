@@ -14,3 +14,7 @@
 /northengine/bin/SDL2_ttf.dll
 /northengine_lang/bin/NEC.exe
 /northengine_lang/cmake-build-debug/
+
+/northengine/lib/libglad.dll.a
+/northengine/lib/libimgui.a
+/northengine/lib/libne_graphics.dll.a

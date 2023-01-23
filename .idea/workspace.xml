@@ -23,14 +23,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92fa2f8-d70d-44d7-b6b5-df7392f78ba9" name="Changes" comment="Add imgui?">
-      <change beforePath="$PROJECT_DIR$/imgui/.github/FUNDING.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgui/.github/issue_template.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgui/.github/pull_request_template.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgui/.github/workflows/build.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgui/.github/workflows/scheduled.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgui/.github/workflows/static-analysis.yml" beforeDir="false" />
-    </list>
+    <list default="true" id="e92fa2f8-d70d-44d7-b6b5-df7392f78ba9" name="Changes" comment="Init commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -129,6 +122,7 @@
       <workItem from="1674205341579" duration="3695000" />
       <workItem from="1674324996047" duration="52889000" />
       <workItem from="1674501901069" duration="653000" />
+      <workItem from="1674502682557" duration="657000" />
     </task>
     <task id="LOCAL-00001" summary="Add imgui?">
       <created>1674481145256</created>
@@ -137,7 +131,21 @@
       <option name="project" value="LOCAL" />
       <updated>1674481145256</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Init commit">
+      <created>1674503078614</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1674503078614</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Init commit">
+      <created>1674503328924</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1674503328924</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -164,8 +172,10 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Add imgui?" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add imgui?" />
+    <MESSAGE value="Init commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Init commit" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
