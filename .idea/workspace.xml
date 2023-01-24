@@ -23,15 +23,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92fa2f8-d70d-44d7-b6b5-df7392f78ba9" name="Changes" comment="Init commit">
-      <change afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/meshData.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/northengine/src/meshData.cpp" afterDir="false" />
+    <list default="true" id="e92fa2f8-d70d-44d7-b6b5-df7392f78ba9" name="Changes" comment="Create MeshData class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/northengine/include/northengine/graphics.h" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/northengine/include/northengine/graphics/mesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/mesh.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/northengine/include/northengine/graphics/meshData.h" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/meshData.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/northengine/lib/libne_graphics.dll.a" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/lib/libne_graphics.dll.a" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/northengine/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/northengine/src/mesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/src/mesh.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/northengine/src/meshData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/src/meshData.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +138,7 @@
       <workItem from="1674205341579" duration="3695000" />
       <workItem from="1674324996047" duration="52889000" />
       <workItem from="1674501901069" duration="653000" />
-      <workItem from="1674502682557" duration="4225000" />
+      <workItem from="1674502682557" duration="4861000" />
     </task>
     <task id="LOCAL-00001" summary="Add imgui?">
       <created>1674481145256</created>
@@ -171,7 +168,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674503495937</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Create MeshData class">
+      <created>1674551514104</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1674551514104</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -179,19 +183,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="master" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -201,7 +193,8 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Add imgui?" />
     <MESSAGE value="Init commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Init commit" />
+    <MESSAGE value="Create MeshData class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create MeshData class" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

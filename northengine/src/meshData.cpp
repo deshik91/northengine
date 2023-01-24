@@ -38,14 +38,20 @@ void MeshData::GetIndices(unsigned int **indices, size_t &indicesCount) {
 void MeshData::SetVertices(float *vertices, size_t verticesCount) {
     ClearVertices();
     m_vertices = new float[verticesCount];
-    memcpy(m_vertices, vertices, verticesCount * sizeof(float));
+//    memcpy(m_vertices, vertices, verticesCount * sizeof(float));
+    for (int i = 0; i < verticesCount; i++) {
+        m_vertices[i] = vertices[i];
+    }
     m_verticesCount = verticesCount;
 }
 
 void MeshData::SetIndices(unsigned int *indices, size_t indicesCount) {
     ClearIndices();
     m_indices = new unsigned int[indicesCount];
-    memcpy(m_indices, indices, indicesCount * sizeof(unsigned int));
+//    memcpy(m_indices, indices, indicesCount * sizeof(unsigned int));
+    for (int i = 0; i < indicesCount; i++) {
+        m_indices[i] = indices[i];
+    }
     m_indicesCount = indicesCount;
 }
 
@@ -79,6 +85,7 @@ void MeshData::AddVertices(float *vertices, size_t verticesCount) {
     float *newVertices = new float[m_verticesCount + verticesCount];
     memcpy(newVertices, m_vertices, m_verticesCount * sizeof(float));
     memcpy(newVertices + m_verticesCount, vertices, verticesCount * sizeof(float));
+    verticesCount += m_verticesCount;
     ClearVertices();
     m_vertices = newVertices;
     m_verticesCount += verticesCount;
@@ -93,6 +100,7 @@ void MeshData::AddIndices(unsigned int *indices, size_t indicesCount) {
     unsigned int *newIndices = new unsigned int[m_indicesCount + indicesCount];
     memcpy(newIndices, m_indices, m_indicesCount * sizeof(unsigned int));
     memcpy(newIndices + m_indicesCount, indices, indicesCount * sizeof(unsigned int));
+    indicesCount += m_indicesCount;
     ClearIndices();
     m_indices = newIndices;
     m_indicesCount += indicesCount;

@@ -46,7 +46,6 @@ public:
 
     void AddIndices(unsigned int *indices, size_t indicesCount);
 
-    // TODO: Fix AddVertex and AddIndex methods
     void AddVertex(float x, float y, float z, float u, float v);
 
     void AddVertex(glm::vec3 position, glm::vec2 uv);
