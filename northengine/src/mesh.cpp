@@ -6,17 +6,19 @@
 #include <glad/glad.h>
 
 Mesh::Mesh(float *vertices, size_t verticesCount, unsigned int *indices, size_t indicesCount) {
-    this->m_vertices = vertices;
-    this->m_verticesCount = verticesCount;
-    this->m_indices = indices;
-    this->m_indicesCount = indicesCount;
+    m_meshData = new MeshData(vertices, verticesCount, indices, indicesCount);
+}
+
+Mesh::Mesh(MeshData *meshData) {
+    m_meshData = meshData;
+}
+
+Mesh::Mesh(MeshData &meshData) {
+    m_meshData = &meshData;
 }
 
 Mesh::Mesh() {
-    this->m_vertices = nullptr;
-    this->m_verticesCount = 0;
-    this->m_indices = nullptr;
-    this->m_indicesCount = 0;
+    m_meshData = new MeshData();
 }
 
 Mesh::~Mesh() {
@@ -29,33 +31,10 @@ void Mesh::Draw() {
         return;
 
     Bind();
-    glDrawElements(GL_TRIANGLES, this->m_indicesCount, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, m_meshData->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Mesh::SetVertices(float *vertices, size_t verticesCount) {
-    this->m_vertices = vertices;
-    this->m_verticesCount = verticesCount;
-}
-
-void Mesh::SetIndices(unsigned int *indices, size_t indicesCount) {
-    this->m_indices = indices;
-    this->m_indicesCount = indicesCount;
-}
-
-float *Mesh::GetVertices() {
-    return m_vertices;
-}
-
-unsigned int *Mesh::GetIndices() {
-    return m_indices;
-}
-
-void Mesh::ClearData() {
-    this->ClearVertices();
-    this->ClearIndices();
-}
-
-void Mesh::ClearBuffers(){
+void Mesh::ClearBuffers() {
     if (m_VAO != 0) {
         glDeleteVertexArrays(1, &m_VAO);
         m_VAO = 0;
@@ -72,28 +51,22 @@ void Mesh::ClearBuffers(){
     }
 }
 
-void Mesh::ClearVertices() {
-    if (this->m_vertices != nullptr) {
-        delete[] this->m_vertices;
-        this->m_vertices = nullptr;
-    }
-}
-
-void Mesh::ClearIndices() {
-    if (this->m_indices != nullptr) {
-        delete[] this->m_indices;
-        this->m_indices = nullptr;
-    }
-}
-
 void Mesh::Bind() {
     glBindVertexArray(this->m_VAO);
 }
 
 void Mesh::GenerateBuffers() {
-    if (m_verticesCount == 0)
+    float *vertices = nullptr;
+    size_t verticesCount = 0;
+    unsigned int *indices = nullptr;
+    size_t indicesCount = 0;
+
+    m_meshData->GetVertices(&vertices, verticesCount);
+    m_meshData->GetIndices(&indices, indicesCount);
+
+    if (verticesCount == 0)
         return;
-    if (m_indicesCount == 0)
+    if (indicesCount == 0)
         return;
 
     if (m_VAO == 0)
@@ -109,10 +82,10 @@ void Mesh::GenerateBuffers() {
     glBindVertexArray(m_VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, m_verticesCount * sizeof(float), m_vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, verticesCount * sizeof(float), vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indicesCount * sizeof(unsigned int), m_indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesCount * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
@@ -124,6 +97,31 @@ void Mesh::GenerateBuffers() {
     glBindVertexArray(0);
 }
 
+void Mesh::RefreshBuffers() {
+    this->ClearBuffers();
+    this->GenerateBuffers();
+}
+
+void Mesh::SetMeshData(MeshData *meshData) {
+    this->ClearData();
+    m_meshData = meshData;
+}
+
+void Mesh::SetMeshData(MeshData &meshData) {
+    this->ClearData();
+    m_meshData = &meshData;
+}
+
+MeshData *Mesh::GetMeshData() {
+    return m_meshData;
+}
+
+void Mesh::ClearData() {
+    if (m_meshData != nullptr) {
+        delete m_meshData;
+        m_meshData = nullptr;
+    }
+}
 
 void DrawMesh(Mesh *mesh, Shader *shader) {
     DrawMesh(*mesh, *shader);

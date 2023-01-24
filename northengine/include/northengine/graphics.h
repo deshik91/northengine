@@ -10,6 +10,7 @@ void InitGraphics();
 #include "window.h"
 #include "graphics/shader.h"
 
+#include "graphics/meshData.h"
 #include "graphics/mesh.h"
 
 #include "graphics/texture.h"

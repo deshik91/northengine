@@ -36,17 +36,25 @@ int main(int argv, char **args) {
 
     auto *texture = new Texture("assets/house.png");
 
-    Mesh *mesh = new Mesh();
-    mesh->SetVertices(new float[3 * 5]{
+    auto *meshData = new MeshData();
+
+    float vertices[] = {
             -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
             0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-            0.0f, 0.5f, 0.0f, 0.5f, 1.0f
-    }, 3 * 5);
+            0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+            -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
+    };
 
-    mesh->SetIndices(new unsigned int[3]{
-            0, 1, 2
-    }, 3);
+    meshData->SetVertices(vertices, 20);
 
+    unsigned int indices[] = {
+            0, 1, 2,
+            0, 2, 3
+    };
+
+    meshData->AddIndices(indices, 6);
+
+    Mesh *mesh = new Mesh(meshData);
     mesh->GenerateBuffers();
 
     LoadColors();
@@ -98,6 +106,7 @@ int main(int argv, char **args) {
                     auto cameraPosition = glm::vec3(0);
                     const float SPEED = 20.0f;
 
+                    // TODO: исправить дёрганность камеры
                     switch (event.key.keysym.sym) {
                         case SDLK_w:
                             cameraPosition.z += SPEED;
@@ -165,6 +174,47 @@ int main(int argv, char **args) {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
+
+        ImGui::Begin("Mesh");
+        {
+            if (ImGui::CollapsingHeader("MeshData")) {
+                MeshData *meshData = mesh->GetMeshData();
+                ImGui::Text("Vertices: %d", meshData->GetVerticesCount());
+                if (ImGui::CollapsingHeader("Vertices")) {
+                    float *vertices;
+                    size_t verticesCount;
+                    meshData->GetVertices(&vertices, verticesCount);
+                    for (size_t i = 0; i < verticesCount; i++) {
+                        ImGui::Text("%f", vertices[i]);
+                    }
+                }
+                ImGui::Text("Indices: %d", meshData->GetIndicesCount());
+                if (ImGui::CollapsingHeader("Indices")) {
+                    unsigned int *indices;
+                    size_t indicesCount;
+                    meshData->GetIndices(&indices, indicesCount);
+                    for (size_t i = 0; i < indicesCount; i++) {
+                        ImGui::Text("%d", indices[i]);
+                    }
+                }
+
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::CollapsingHeader("Texture")) {
+                ImGui::Text("Texture size: %dx%d", texture->GetWidth(), texture->GetHeight());
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::CollapsingHeader("Matrix")) {
+                ImGui::Text("Model matrix:");
+                ImGui::Text("Projection matrix:");
+            }
+
+        }
+        ImGui::End();
 
         ImGui::Begin("Settings");
         static bool isVsyncEnabled = false;
