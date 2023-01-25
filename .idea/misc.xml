@@ -11,6 +11,7 @@
       <file path="$PROJECT_DIR$/northengine_lang/src" />
     </sourceRoots>
     <libraryRoots>
+      <file path="$PROJECT_DIR$/imgui" />
       <file path="$PROJECT_DIR$/northengine/SDL" />
       <file path="$PROJECT_DIR$/northengine/glad_3.3" />
       <file path="$PROJECT_DIR$/northengine/glm" />

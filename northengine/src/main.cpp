@@ -81,6 +81,8 @@ int main(int argv, char **args) {
 
     std::cout << "Starting main loop" << std::endl;
 
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
     while (running) {
         static float lastFrame = 0.0f;
         float deltaTime = (float) (SDL_GetTicks() - lastFrame) / 1000.0f;
@@ -141,22 +143,24 @@ int main(int argv, char **args) {
                         camera->UpdateShader(*shader);
                     }
                 } else if (event.type == SDL_MOUSEWHEEL) {
-                    camera->SetZoom(event.wheel.y);
+                    camera->SetZoom(camera->GetZoom() - event.wheel.y);
+                    camera->UpdateShader(*shader);
+                    shader->SetMat4("projection", camera->GetProjectionMatrix(screenSize.x, screenSize.y));
                 }
             }
         }
 
         static unsigned int maxFps = 120;
-        if (deltaTime < 1000.0f / maxFps) {
-            SDL_Delay((1000.0f / maxFps) - deltaTime);
-        }
+        if (maxFps)
+            if (deltaTime < 1000.0f / maxFps)
+                SDL_Delay((1000.0f / maxFps) - deltaTime);
 
         static bool vsync = false;
         static glm::vec2 windowedSize = window->GetSize();
         static glm::vec2 fullscreenSize = windowedSize;
         static int fullscreenMode = 0;
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader->Use();
@@ -180,8 +184,9 @@ int main(int argv, char **args) {
                     float *vertices;
                     size_t verticesCount;
                     meshData->GetVertices(&vertices, verticesCount);
-                    for (size_t i = 0; i < verticesCount; i++) {
-                        ImGui::Text("%f", vertices[i]);
+                    for (size_t i = 0; i < verticesCount; i += 5) {
+                        ImGui::Text("%.3f %.3f %.3f | %.3f %.3f", vertices[i], vertices[i + 1], vertices[i + 2],
+                                    vertices[i + 3], vertices[i + 4]);
                     }
                 }
                 ImGui::Text("Indices: %d", meshData->GetIndicesCount());
@@ -200,26 +205,36 @@ int main(int argv, char **args) {
 
             if (ImGui::CollapsingHeader("Texture")) {
                 ImGui::Text("Texture size: %dx%d", texture->GetWidth(), texture->GetHeight());
+                ImGui::Text("Texture channels: %d", texture->GetChannels());
+                ImGui::Separator();
+                int textureId = texture->GetID();
+                static float textureScale = 1.0f;
+                ImGui::SliderFloat("Scale", &textureScale, 0.1f, 3.0f);
+                ImGui::Text("Texture id: %d", textureId);
+                ImGui::Image((void *) textureId, ImVec2(256 * textureScale, 256 * textureScale));
             }
+        }
+        ImGui::End();
 
-            ImGui::Separator();
-
-            if (ImGui::CollapsingHeader("Matrix")) {
-                ImGui::Text("Model matrix:");
-                ImGui::Text("Projection matrix:");
-            }
-
+        ImGui::Begin("Info");
+        {
+            ImGui::Text("FPS: %.1f", 1.0f / deltaTime);
+            ImGui::Text("Delta time: %.3f", deltaTime);
+            ImGui::Text("Camera position: %.3f %.3f %.3f",
+                        camera->GetPosition().x, camera->GetPosition().y, camera->GetPosition().z);
+            ImGui::Text("Camera zoom: %.3f", camera->GetZoom());
         }
         ImGui::End();
 
         ImGui::Begin("Settings");
+        ImGui::ColorEdit4("Clear color", (float *) &clear_color);
         static bool isVsyncEnabled = false;
         ImGui::Checkbox("VSync", &vsync);
         if (isVsyncEnabled != vsync) {
             isVsyncEnabled = vsync;
             Window::SetVSync(vsync);
         }
-        ImGui::SliderInt("Max FPS", (int *) &maxFps, 1, 255);
+        ImGui::SliderInt("Max FPS", (int *) &maxFps, 0, 255);
         ImGui::SliderFloat2("Windowed Size", &windowedSize.x, 0, 1920);
         ImGui::SliderFloat2("Fullscreen Size", &fullscreenSize.x, 0, 1920);
 

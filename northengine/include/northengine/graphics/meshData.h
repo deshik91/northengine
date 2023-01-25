@@ -17,6 +17,10 @@ private:
     unsigned int *m_indices = nullptr;
     size_t m_indicesCount = 0;
 
+    static void MoveIndices(unsigned int *indices, size_t indicesCount, size_t offset);
+
+    size_t GetMaxIndex();
+
 public:
     MeshData(float *vertices, size_t verticesCount, unsigned int *indices, size_t indicesCount);
 
@@ -24,9 +28,9 @@ public:
 
     ~MeshData();
 
-    size_t GetVerticesCount();
+    size_t GetVerticesCount() const;
 
-    size_t GetIndicesCount();
+    size_t GetIndicesCount() const;
 
     void GetVertices(float **vertices, size_t &verticesCount);
 
