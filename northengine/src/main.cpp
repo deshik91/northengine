@@ -32,23 +32,17 @@ int main(int argv, char **args) {
     auto *camera = new Camera();
     std::cout << "Camera created" << std::endl;
 
+    glEnable(GL_DEPTH_TEST);
+
     auto *shader = new Shader("assets/vertex.glsl", "assets/fragment.glsl");
 
     auto *texture = new Texture("assets/house.png");
 
     auto *meshData = new MeshData();
 
-    meshData->AddVertex(-0.5f, -0.5f, 0.0f, 0.0f, 0.0f);
-    meshData->AddVertex(0.5f, -0.5f, 0.0f, 1.0f, 0.0f);
-    meshData->AddVertex(0.5f, 0.5f, 0.0f, 1.0f, 1.0f);
-    meshData->AddVertex(-0.5f, 0.5f, 0.0f, 0.0f, 1.0f);
-
-    meshData->AddIndex(0);
-    meshData->AddIndex(1);
-    meshData->AddIndex(2);
-    meshData->AddIndex(0);
-    meshData->AddIndex(2);
-    meshData->AddIndex(3);
+    auto *cube = CreateCube(glm::vec3(-0.5, -0.5, -0.5), glm::vec3(1, 1, 1));
+    meshData->AddMeshData(cube);
+    delete cube;
 
     Mesh *mesh = new Mesh(meshData);
     mesh->GenerateBuffers();
@@ -161,7 +155,7 @@ int main(int argv, char **args) {
         static int fullscreenMode = 0;
 
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader->Use();
 

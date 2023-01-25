@@ -15,4 +15,7 @@ void InitGraphics();
 
 #include "graphics/texture.h"
 
+#include "graphics/primitives/polygon.h"
+#include "graphics/primitives/cube.h"
+
 #endif //NORTH_ENGINE_LANG_GRAPHICS_H
