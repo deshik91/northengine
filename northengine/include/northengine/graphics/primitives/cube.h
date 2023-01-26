@@ -10,32 +10,17 @@
 #include "northengine/graphics/meshData.h"
 #include "northengine/graphics/primitives/polygon.h"
 
-MeshData * CreateCube(glm::vec3 position, glm::vec3 size){
-    auto *meshData = new MeshData();
+MeshData CreateCube(glm::vec3 position, glm::vec3 size){
+    MeshData meshData;
 
-    auto *temp = XPolygon(position, glm::vec2(size.y, size.z));
-    meshData->AddMeshData(temp);
-    delete temp;
+    meshData.AddMeshData(XPolygon(position, glm::vec2(size.y, size.z)));
+    meshData.AddMeshData(XPolygon(glm::vec3(position.x + size.x, position.y, position.z), glm::vec2(size.y, size.z)));
 
-    temp = XPolygon(glm::vec3(position.x + size.x, position.y, position.z), glm::vec2(size.y, size.z));
-    meshData->AddMeshData(temp);
-    delete temp;
+    meshData.AddMeshData(YPolygon(glm::vec3(position.x, position.y + size.y, position.z), glm::vec2(size.x, size.z)));
+    meshData.AddMeshData(YPolygon(glm::vec3(position.x, position.y, position.z), glm::vec2(size.x, size.z)));
 
-    temp = YPolygon(glm::vec3(position.x, position.y + size.y, position.z), glm::vec2(size.x, size.z));
-    meshData->AddMeshData(temp);
-    delete temp;
-
-    temp = YPolygon(glm::vec3(position.x, position.y, position.z), glm::vec2(size.x, size.z));
-    meshData->AddMeshData(temp);
-    delete temp;
-
-    temp = ZPolygon(glm::vec3(position.x, position.y, position.z + size.z), glm::vec2(size.x, size.y));
-    meshData->AddMeshData(temp);
-    delete temp;
-
-    temp = ZPolygon(glm::vec3(position.x, position.y, position.z), glm::vec2(size.x, size.y));
-    meshData->AddMeshData(temp);
-    delete temp;
+    meshData.AddMeshData(ZPolygon(glm::vec3(position.x, position.y, position.z + size.z), glm::vec2(size.x, size.y)));
+    meshData.AddMeshData(ZPolygon(glm::vec3(position.x, position.y, position.z), glm::vec2(size.x, size.y)));
 
     return meshData;
 }

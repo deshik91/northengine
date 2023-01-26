@@ -10,15 +10,15 @@ Mesh::Mesh(float *vertices, size_t verticesCount, unsigned int *indices, size_t 
 }
 
 Mesh::Mesh(MeshData *meshData) {
-    m_meshData = meshData;
+    SetMeshData(meshData);
 }
 
 Mesh::Mesh(MeshData &meshData) {
-    m_meshData = &meshData;
+    SetMeshData(&meshData);
 }
 
 Mesh::Mesh() {
-    m_meshData = new MeshData();
+    m_meshData = nullptr;
 }
 
 Mesh::~Mesh() {
@@ -30,8 +30,10 @@ void Mesh::Draw() {
     if (m_VAO == 0)
         return;
 
+    size_t indicesCount = m_meshData != nullptr ? m_meshData->GetIndicesCount() : m_indicesCount;
+
     Bind();
-    glDrawElements(GL_TRIANGLES, m_meshData->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, nullptr);
 }
 
 void Mesh::ClearBuffers() {
@@ -104,12 +106,12 @@ void Mesh::RefreshBuffers() {
 
 void Mesh::SetMeshData(MeshData *meshData) {
     this->ClearData();
-    m_meshData = meshData;
+    m_meshData = new MeshData(*meshData);
 }
 
 void Mesh::SetMeshData(MeshData &meshData) {
     this->ClearData();
-    m_meshData = &meshData;
+    m_meshData = new MeshData(meshData);
 }
 
 MeshData *Mesh::GetMeshData() {
@@ -118,6 +120,7 @@ MeshData *Mesh::GetMeshData() {
 
 void Mesh::ClearData() {
     if (m_meshData != nullptr) {
+        m_indicesCount = m_meshData->GetIndicesCount();
         delete m_meshData;
         m_meshData = nullptr;
     }
@@ -125,7 +128,6 @@ void Mesh::ClearData() {
 
 void DrawMesh(Mesh *mesh, Shader *shader) {
     DrawMesh(*mesh, *shader);
-
 }
 
 void DrawMesh(Mesh &mesh, Shader &shader) {

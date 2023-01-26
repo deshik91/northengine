@@ -26,6 +26,8 @@ public:
 
     MeshData();
 
+    MeshData(MeshData &meshData);
+
     ~MeshData();
 
     size_t GetVerticesCount() const;
@@ -62,7 +64,7 @@ public:
 
     void AddMeshData(MeshData *meshData);
 
-    void AddMeshData(MeshData &meshData);
+    void AddMeshData(MeshData meshData);
 
     void AddMeshData(float *vertices, size_t verticesCount, unsigned int *indices, size_t indicesCount);
 };

@@ -23,17 +23,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92fa2f8-d70d-44d7-b6b5-df7392f78ba9" name="Changes" comment="Fix AddMeshData void&#10;&#10;Add indices offset for meshData">
-      <change afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/primitives/cube.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/primitives/polygon.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e92fa2f8-d70d-44d7-b6b5-df7392f78ba9" name="Changes" comment="Add primitives&#10;&#10;Add polygon primitive (X, Y and Z) and cube primitive">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/northengine/include/northengine/graphics.h" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/northengine/include/northengine/graphics/mesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/mesh.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/northengine/include/northengine/graphics/meshData.h" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/meshData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/northengine/include/northengine/graphics/primitives/cube.h" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/primitives/cube.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/northengine/include/northengine/graphics/primitives/polygon.h" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/include/northengine/graphics/primitives/polygon.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/northengine/lib/libne_graphics.dll.a" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/lib/libne_graphics.dll.a" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/northengine/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/northengine/src/mesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/src/mesh.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/northengine/src/meshData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/src/meshData.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/northengine/src/window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/northengine/src/window.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,11 +98,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.northengine">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="glad" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="NORTH_ENGINE_LANG" TARGET_NAME="glad" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -144,7 +138,9 @@
       <workItem from="1674324996047" duration="52889000" />
       <workItem from="1674501901069" duration="653000" />
       <workItem from="1674502682557" duration="4861000" />
-      <workItem from="1674641480819" duration="2064000" />
+      <workItem from="1674641480819" duration="4196000" />
+      <workItem from="1674650822972" duration="1226000" />
+      <workItem from="1674722183305" duration="3022000" />
     </task>
     <task id="LOCAL-00001" summary="Add imgui?">
       <created>1674481145256</created>
@@ -188,7 +184,21 @@
       <option name="project" value="LOCAL" />
       <updated>1674642144296</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fix AddMeshData void&#10;&#10;Add indices offset for meshData">
+      <created>1674643633184</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1674643633184</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Add primitives&#10;&#10;Add polygon primitive (X, Y and Z) and cube primitive">
+      <created>1674643667565</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1674643667565</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -196,7 +206,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="mesh_data" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -208,7 +230,8 @@
     <MESSAGE value="Init commit" />
     <MESSAGE value="Create MeshData class" />
     <MESSAGE value="Fix AddMeshData void&#10;&#10;Add indices offset for meshData" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix AddMeshData void&#10;&#10;Add indices offset for meshData" />
+    <MESSAGE value="Add primitives&#10;&#10;Add polygon primitive (X, Y and Z) and cube primitive" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add primitives&#10;&#10;Add polygon primitive (X, Y and Z) and cube primitive" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -15,6 +15,8 @@ private:
 
     unsigned int m_VAO = 0, m_VBO = 0, m_EBO = 0;
 
+    unsigned int m_indicesCount = 0;
+
 public:
     Mesh(float *vertices, size_t verticesCount, unsigned int *indices, size_t indicesCount);
 

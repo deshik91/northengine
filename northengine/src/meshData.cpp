@@ -101,21 +101,11 @@ void MeshData::AddIndices(unsigned int *indices, size_t indicesCount) {
 }
 
 void MeshData::AddMeshData(MeshData *meshData) {
-    float *vertices;
-    size_t verticesCount;
-    meshData->GetVertices(&vertices, verticesCount);
-    AddVertices(vertices, verticesCount);
+    if (meshData == nullptr) {
+        return;
+    }
 
-    unsigned int *indices;
-    size_t indicesCount;
-    meshData->GetIndices(&indices, indicesCount);
-    size_t offset = GetMaxIndex();
-    MoveIndices(indices, indicesCount, offset ? offset + 1 : offset);
-    AddIndices(indices, indicesCount);
-}
-
-void MeshData::AddMeshData(MeshData &meshData) {
-    AddMeshData(&meshData);
+    AddMeshData(*meshData);
 }
 
 void MeshData::AddMeshData(float *vertices, size_t verticesCount, unsigned int *indices, size_t indicesCount) {
@@ -173,6 +163,32 @@ size_t MeshData::GetMaxIndex() {
         }
     }
     return maxIndex;
+}
+
+void MeshData::AddMeshData(MeshData meshData) {
+    float *vertices;
+    size_t verticesCount;
+    meshData.GetVertices(&vertices, verticesCount);
+    AddVertices(vertices, verticesCount);
+
+    unsigned int *indices;
+    size_t indicesCount;
+    meshData.GetIndices(&indices, indicesCount);
+    size_t offset = GetMaxIndex();
+    MoveIndices(indices, indicesCount, offset ? offset + 1 : offset);
+    AddIndices(indices, indicesCount);
+}
+
+MeshData::MeshData(MeshData &meshData) {
+    float *vertices;
+    size_t verticesCount;
+    meshData.GetVertices(&vertices, verticesCount);
+    SetVertices(vertices, verticesCount);
+
+    unsigned int *indices;
+    size_t indicesCount;
+    meshData.GetIndices(&indices, indicesCount);
+    SetIndices(indices, indicesCount);
 }
 
 

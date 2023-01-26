@@ -15,6 +15,8 @@
 
 #include "northengine/interface/style.h"
 
+
+
 int main(int argv, char **args) {
     (void) args;
     (void) argv;
@@ -25,55 +27,38 @@ int main(int argv, char **args) {
     window->SetResizable(true);
     Window::SetVSync(false);
 
-    std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
     InitImGui(window);
-
-    std::cout << "Creating camera" << std::endl;
-    auto *camera = new Camera();
-    std::cout << "Camera created" << std::endl;
 
     glEnable(GL_DEPTH_TEST);
 
+    auto *camera = new Camera();
     auto *shader = new Shader("assets/vertex.glsl", "assets/fragment.glsl");
-
     auto *texture = new Texture("assets/house.png");
-
     auto *meshData = new MeshData();
-
-    auto *cube = CreateCube(glm::vec3(-0.5, -0.5, -0.5), glm::vec3(1, 1, 1));
+    auto cube = CreateCube(glm::vec3(-0.5, -0.5, -0.5), glm::vec3(1, 1, 1));
     meshData->AddMeshData(cube);
-    delete cube;
-
     Mesh *mesh = new Mesh(meshData);
+    delete meshData;
     mesh->GenerateBuffers();
+    mesh->ClearData();
 
     LoadColors();
     ImGui::StyleColorsDark();
     ImGuiStyle &style = ImGui::GetStyle();
     LoadStyle(style);
 
-    std::cout << "Setting camera position" << std::endl;
     camera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
     glm::vec2 screenSize = window->GetSize();
-
-    std::cout << "Update model matrix" << std::endl;
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-
-    std::cout << "Update projection matrix" << std::endl;
     shader->Use();
     shader->SetMat4("model", model);
     shader->SetMat4("projection", camera->GetProjectionMatrix(screenSize.x, screenSize.y));
-
-    std::cout << "Update shader" << std::endl;
     camera->UpdateShader(*shader);
-    std::cout << "Shader updated" << std::endl;
 
     SDL_Event event;
     bool running = true;
     bool editStyle = false;
-
-    std::cout << "Starting main loop" << std::endl;
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -126,7 +111,6 @@ int main(int argv, char **args) {
             } else if (event.type == SDL_WINDOWEVENT) {
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
                     screenSize = window->GetSize();
-                    std::cout << "Window resized: " << screenSize.x << "x" << screenSize.y << std::endl;
                     glViewport(0, 0, screenSize.x, screenSize.y);
                     shader->SetMat4("projection", camera->GetProjectionMatrix(screenSize.x, screenSize.y));
                 }
@@ -163,7 +147,7 @@ int main(int argv, char **args) {
         camera->UpdateShader(*shader);
         shader->SetTexture("texture1", 0);
         shader->SetBool("invertVertical", true);
-        DrawMesh(*mesh, shader);
+        DrawMesh(mesh, shader);
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
@@ -172,27 +156,28 @@ int main(int argv, char **args) {
         ImGui::Begin("Mesh");
         {
             if (ImGui::CollapsingHeader("MeshData")) {
-                MeshData *meshData = mesh->GetMeshData();
-                ImGui::Text("Vertices: %d", meshData->GetVerticesCount());
-                if (ImGui::CollapsingHeader("Vertices")) {
-                    float *vertices;
-                    size_t verticesCount;
-                    meshData->GetVertices(&vertices, verticesCount);
-                    for (size_t i = 0; i < verticesCount; i += 5) {
-                        ImGui::Text("%.3f %.3f %.3f | %.3f %.3f", vertices[i], vertices[i + 1], vertices[i + 2],
-                                    vertices[i + 3], vertices[i + 4]);
+                MeshData *currentMeshData = mesh->GetMeshData();
+                if(currentMeshData != nullptr) {
+                    ImGui::Text("Vertices: %lld", currentMeshData->GetVerticesCount());
+                    if (ImGui::CollapsingHeader("Vertices")) {
+                        float *vertices;
+                        size_t verticesCount;
+                        currentMeshData->GetVertices(&vertices, verticesCount);
+                        for (size_t i = 0; i < verticesCount; i += 5) {
+                            ImGui::Text("%.3f %.3f %.3f | %.3f %.3f", vertices[i], vertices[i + 1], vertices[i + 2],
+                                        vertices[i + 3], vertices[i + 4]);
+                        }
+                    }
+                    ImGui::Text("Indices: %lld", currentMeshData->GetIndicesCount());
+                    if (ImGui::CollapsingHeader("Indices")) {
+                        unsigned int *indices;
+                        size_t indicesCount;
+                        currentMeshData->GetIndices(&indices, indicesCount);
+                        for (size_t i = 0; i < indicesCount; i++) {
+                            ImGui::Text("%d", indices[i]);
+                        }
                     }
                 }
-                ImGui::Text("Indices: %d", meshData->GetIndicesCount());
-                if (ImGui::CollapsingHeader("Indices")) {
-                    unsigned int *indices;
-                    size_t indicesCount;
-                    meshData->GetIndices(&indices, indicesCount);
-                    for (size_t i = 0; i < indicesCount; i++) {
-                        ImGui::Text("%d", indices[i]);
-                    }
-                }
-
             }
 
             ImGui::Separator();
@@ -221,30 +206,31 @@ int main(int argv, char **args) {
         ImGui::End();
 
         ImGui::Begin("Settings");
-        ImGui::ColorEdit4("Clear color", (float *) &clear_color);
-        static bool isVsyncEnabled = false;
-        ImGui::Checkbox("VSync", &vsync);
-        if (isVsyncEnabled != vsync) {
-            isVsyncEnabled = vsync;
-            Window::SetVSync(vsync);
-        }
-        ImGui::SliderInt("Max FPS", (int *) &maxFps, 0, 255);
-        ImGui::SliderFloat2("Windowed Size", &windowedSize.x, 0, 1920);
-        ImGui::SliderFloat2("Fullscreen Size", &fullscreenSize.x, 0, 1920);
+        {
+            ImGui::ColorEdit4("Clear color", (float *) &clear_color);
+            static bool isVsyncEnabled = false;
+            ImGui::Checkbox("VSync", &vsync);
+            if (isVsyncEnabled != vsync) {
+                isVsyncEnabled = vsync;
+                Window::SetVSync(vsync);
+            }
+            ImGui::SliderInt("Max FPS", (int *) &maxFps, 0, 255);
+            ImGui::SliderFloat2("Windowed Size", &windowedSize.x, 0, 1920);
+            ImGui::SliderFloat2("Fullscreen Size", &fullscreenSize.x, 0, 1920);
 
-        static bool currentFullscreen = false;
-        ImGui::Checkbox("Current resolution", &currentFullscreen);
-        if (currentFullscreen) {
-            fullscreenSize = {1920, 1080};
-        }
+            static bool currentFullscreen = false;
+            ImGui::Checkbox("Current resolution", &currentFullscreen);
+            if (currentFullscreen) {
+                fullscreenSize = {1920, 1080};
+            }
 
-        static int fullscreen = 0;
-        ImGui::Combo("Fullscreen", &fullscreen, "Windowed\0FullScreen\0Borderless\0");
-        if (fullscreen != fullscreenMode) {
-            fullscreenMode = fullscreen;
-            window->SetFullscreen(static_cast<FullscreenMode>(fullscreenMode));
+            static int fullscreen = 0;
+            ImGui::Combo("Fullscreen", &fullscreen, "Windowed\0FullScreen\0Borderless\0");
+            if (fullscreen != fullscreenMode) {
+                fullscreenMode = fullscreen;
+                window->SetFullscreen(static_cast<FullscreenMode>(fullscreenMode));
+            }
         }
-
         ImGui::End();
 
         if (editStyle) {
